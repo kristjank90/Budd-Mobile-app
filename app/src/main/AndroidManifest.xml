@@ -2,20 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nfcpay.budd">
 
+    <!-- Need to have NFC, otherwise the package won't install -->
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <!-- Requires both Camera and NFC permissions -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/budd_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/budd_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Budd">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Budd.NoActionBar">
+        android:theme="@style/Theme.Budd.NoActionBar" android:usesCleartextTraffic="true"> <!-- (TODO) Remove the usesClearTextTraffic to Disable HTTP requests!! -->
+
+        <activity android:name=".NfcPaymentActivity" android:label="@string/title_activity_nfc_payment" android:theme="@style/Theme.Budd.NoActionBar" android:screenOrientation="portrait">
+            <!-- NFC intent receiver -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/com.nfcpay.budd"/>
+            </intent-filter>
+            <!-- Accepts URIs that begin with "paybudd://” -->
+            <intent-filter android:label="intent_paybudd">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="paybudd" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="paybudd" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"  android:label="@string/app_name" android:theme="@style/Theme.Budd.NoActionBar" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
