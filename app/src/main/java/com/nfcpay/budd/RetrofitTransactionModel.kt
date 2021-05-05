@@ -3,7 +3,7 @@ package com.nfcpay.budd
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class Example {
+class BasketTransaction {
     @SerializedName("itemList")
     @Expose
     var itemList: List<TransactItem>? = null

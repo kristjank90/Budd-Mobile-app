@@ -1,5 +1,5 @@
 package com.nfcpay.budd
-// Data model for a Basket transaction
+// Data model for a Basket transaction (TODO) Delete this model as not in use
 data class TransactionModel(
     var transactionId:Int?=0,
     var customerId:Int?=0,
